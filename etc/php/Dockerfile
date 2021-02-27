@@ -10,7 +10,8 @@ RUN apt-get update > /dev/null && apt-get install -y --no-install-recommends \
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install intl
 
-COPY ./php.ini /usr/local/etc/phpphp.ini
+COPY php.ini /usr/local/etc/phpphp.ini
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer > /dev/null
