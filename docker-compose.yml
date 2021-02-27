@@ -1,12 +1,5 @@
 version: "3.9"
 services:
-    php:
-        container_name: ${APP_NAME}_server
-        build: ./etc/php
-        ports:
-            - 80:80
-        volumes:
-            - ./app:/var/www/html
     database:
         image: mysql:5.7
         container_name: ${APP_NAME}_mysql
@@ -17,3 +10,26 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         ports:
             - 3306:3306
+    php:
+        container_name: ${APP_NAME}_server
+        build: ./etc/php
+        ports:
+            - 80:80
+        volumes:
+            - ./app:/var/www/html
+        depends_on:
+            - database
+    myadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: ${APP_NAME}_phpmyadmin
+        ports:
+            - 8081:80
+        links:
+            -   database:db
+        depends_on:
+            - database
+    mailcatcher:
+        container_name: ${APP_NAME}_mailcatcher
+        image: schickling/mailcatcher
+        ports:
+            - 1080:1080
